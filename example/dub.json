@@ -1,0 +1,12 @@
+{
+	"name": "example",
+	"description": "Example of ColourfulMoon use",
+	"authors": ["Azbuka-slovensko"],
+	"copyright": "2016 Azbuka-slovensko",
+	"license": "MIT",
+	"dependencies": {
+		"colourfulmoon":{
+			"path": "../"
+		}
+	}
+}
