@@ -30,8 +30,8 @@ string Reverse(string s = "") {
 }
 
 private string Colour(ubyte R = 0, ubyte G = 0, ubyte B = 0) {
-	import std.math;
-	import std.conv;
+	import std.math : floor;
+	import std.conv : to;
 
 	if(R == G && R == B) {
 		return to!string((R > 239) ? 15 : floor(cast(real) R / 10) + 232);
@@ -44,6 +44,9 @@ private string Colour(ubyte R = 0, ubyte G = 0, ubyte B = 0) {
 * Text colour
 * Params:
 *	s = input text
+*	R = Red
+*	G = Green
+*	B = Blue
 * Returns: Coloured text.
 */
 string Foreground(string s = "", ubyte R = 0, ubyte G = 0, ubyte B = 0) {
