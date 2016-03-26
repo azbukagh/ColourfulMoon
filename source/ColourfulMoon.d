@@ -1,37 +1,8 @@
 module ColourfulMoon;
-/**
-* Simple text styling library
-*/
-version(Windows) {
-	
-} else {
-	/**
-	* Text style
-	* Params:
-	*	s = input text
-	* Returns: Styled text.
-	*/
-	string Reset(string s = "") {
-		return s ~ "\033[0m";
-	}
-	/// ditto
-	string Bold(string s = "") {
-		return "\033[1m" ~ s;
-	}
-	/// ditto
-	string Underline(string s = "") {
-		return "\033[4m" ~ s;
-	}
-	/// ditto
-	string Blink(string s = "") {
-		return "\033[5m" ~ s;
-	}
-	/// ditto
-	string Reverse(string s = "") {
-		return "\033[7m" ~ s;
-	}
+struct Colour {
+	ubyte R, G, B;
 
-	private real Colour(ubyte R = 0, ubyte G = 0, ubyte B = 0) {
+	real toConsole() {
 		import std.math : floor;
 
 		if(R == G && R == B) {
@@ -41,22 +12,75 @@ version(Windows) {
 		}
 	}
 
-	/**
-	* Text colour
-	* Params:
-	*	s = input text
-	*	R = Red
-	*	G = Green
-	*	B = Blue
-	* Returns: Coloured text.
-	*/
-	string Foreground(string s = "", ubyte R = 0, ubyte G = 0, ubyte B = 0) {
-		import std.conv : to;
-		return "\033[38;05;" ~ to!string(Colour(R, G, B)) ~ "m" ~ s;
+	bool empty() {
+		return (R == G) &&
+			(R == B) &&
+			(R == 0);
 	}
-	/// ditto
-	string Background(string s = "", ubyte R = 0, ubyte G = 0, ubyte B = 0) {
+}
+
+struct Style {
+	private {
+		bool bold, underline, blink, reverse;
+		Colour background, foreground;
+	}
+
+	Style Bold() {
+		bold = bold ? false : true;
+		return this;
+	}
+
+	Style Underline() {
+		underline = underline ? false : true;
+		return this;
+	}
+
+	Style Blink() {
+		blink = blink ? false : true;
+		return this;
+	}
+
+	Style Reverse() {
+		reverse = reverse ? false : true;
+		return this;
+	}
+
+	Style Background(Colour b) {
+		background = b;
+		return this;
+	}
+
+	Style Foreground(Colour b) {
+		foreground = b;
+		return this;
+	}
+
+	string apply(string s = "") {
+		import std.array : appender;
+		import std.format : formattedWrite;
 		import std.conv : to;
-		return "\033[48;05;" ~ to!string(Colour(R, G, B)) ~ "m" ~ s;
+
+		size_t[] o;
+		if(bold)
+			o ~= 1;
+		if(underline)
+			o ~= 4;
+		if(blink)
+			o ~= 5;
+		if(reverse)
+			o ~= 7;
+
+		if(!background.empty)
+			o ~= [48, 0x05, to!size_t(background.toConsole)];
+
+		if(!foreground.empty)
+			o ~= [38, 0x05, to!size_t(foreground.toConsole)];
+
+		
+		
+		auto writer = appender!string();
+		formattedWrite(writer, "\033[%(%s;%)m%s\033[0m", o, s);
+
+		return writer.data;
 	}
 }
