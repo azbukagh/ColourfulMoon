@@ -2,6 +2,10 @@ ColourfulMoon
 =============
 Paint your text simple!
 
+## Windows support
+Noway. Colouring in Windows is so different from POSIX, that all API of ColourfulMoon must be changed.
+ColourfulMoon is designed for most easy and readable API. Use other libraries if you need Windows support.
+
 ## Usage
 There are 2 different ways to use ColourfulMoon.
 1. Just call the functions:
@@ -22,8 +26,8 @@ So, just use second way.
 - *Blink*. Make text blinked.
 - *Reverse*. Reverses Foreground <-> Background.
 
-- *Foreground* Colour text face to given R, G, B.
-- *Backround* Colour text background to given R, G, B.
+- *Foreground* Colour text face to given Colour(R, G, B).
+- *Backround* Colour text background to given Colour(R, G, B).
 
 
 ## Understanding operation order
@@ -46,13 +50,11 @@ To reset style of text - use *Reset*:
 "text".Foreground(0, 0, 0).Bold.Reset.Foreground(156, 156, 156).writeln;
 // <-----------------------------------------------------
 //                                ---------->
-// Reset works from left-to-right. Now text has 0,0,0 colour.
+// Reset works left-to-right. Now text has 0,0,0 colour.
 ```
 
 ## Example
 Aviable in `./example`.
 
 ## TODO
-- [ ] Speed up code by use of Ranges or something like this
-- [ ] Windows support
 - [ ] Test on BSD, OS X, etc.
