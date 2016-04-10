@@ -20,23 +20,43 @@ private T Style(T, S...)(S anotherS) {
 }
 
 T Reset(T)(T s = "") {
-	return Style!T(s, "\033[0m");
+	version(Posix) {
+		return Style!T(s, "\033[0m");
+	} else {
+		return s;
+	}
 }
 /// ditto
 T Bold(T)(T s = "") {
-	return Style!T("\033[1m", s);
+	version(Posix) {
+		return Style!T("\033[1m", s);
+	} else {
+		return s;
+	}
 }
 /// ditto
 T Underline(T)(T s = "") {
-	return Style!T("\033[4m", s);
+	version(Posix) {
+		return Style!T("\033[4m", s);
+	} else {
+		return s;
+	}
 }
 /// ditto
 T Blink(T)(T s = "") {
-	return Style!T("\033[5m", s);
+	version(Posix) {
+		return Style!T("\033[5m", s);
+	} else {
+		return s;
+	}
 }
 /// ditto
 T Reverse(T)(T s = "") {
-	return Style!T("\033[7m", s);
+	version(Posix) {
+		return Style!T("\033[7m", s);
+	} else {
+		return s;
+	}
 }
 
 struct Colour {
@@ -64,9 +84,17 @@ struct Colour {
 * Returns: Coloured text.
 */
 T Foreground(T)(T s = "", Colour c = Colour()) {
-	return Style!T("\033[38;05;", c.toConsole(), "m", s);
+	version(Posix) {
+		return Style!T("\033[38;05;", c.toConsole(), "m", s);
+	} else {
+		return s;
+	}
 }
 /// ditto
 T Background(T)(T s = "", Colour c = Colour()) {
-	return Style!T("\033[48;05;", c.toConsole(), "m", s);
+	version(Posix) {
+		return Style!T("\033[48;05;", c.toConsole(), "m", s);
+	} else {
+		return s;
+	}
 }
