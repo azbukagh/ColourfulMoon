@@ -1,86 +1,72 @@
 module ColourfulMoon;
+import std.array : appender;
+
+/**
+* Simple text styling library
+*/
+
+/**
+* Text style
+* Params:
+*	s = input text
+* Returns: Styled text.
+*/
+
+private T Style(T, S...)(S anotherS) {
+	auto a = appender!T();
+	foreach(i; anotherS)
+		a.put(i);
+	return a.data;
+}
+
+T Reset(T)(T s = "") {
+	return Style!T(s, "\033[0m");
+}
+/// ditto
+T Bold(T)(T s = "") {
+	return Style!T("\033[1m", s);
+}
+/// ditto
+T Underline(T)(T s = "") {
+	return Style!T("\033[4m", s);
+}
+/// ditto
+T Blink(T)(T s = "") {
+	return Style!T("\033[5m", s);
+}
+/// ditto
+T Reverse(T)(T s = "") {
+	return Style!T("\033[7m", s);
+}
+
 struct Colour {
 	ubyte R, G, B;
 
-	real toConsole() {
+	string toConsole() {
 		import std.math : floor;
+		import std.conv : to;
 
 		if(R == G && R == B) {
-			return (R > 239) ? 15 : floor(cast(real) R / 10) + 232;
+			return to!string((R > 239) ? 15 : floor(cast(real) R / 10) + 232);
 		} else {
-			return 16 + 36 * floor(cast(real) R / 51) + 6 * floor(cast(real) G / 51) + floor(cast(real) B / 51);
+			return to!string(16 + 36 * floor(cast(real) R / 51) + 6 * floor(cast(real) G / 51) + floor(cast(real) B / 51));
 		}
-	}
-
-	bool empty() {
-		return (R == G) &&
-			(R == B) &&
-			(R == 0);
 	}
 }
 
-struct Style {
-	private {
-		bool bold, underline, blink, reverse;
-		Colour background, foreground;
-	}
-
-	Style Bold() {
-		bold = bold ? false : true;
-		return this;
-	}
-
-	Style Underline() {
-		underline = underline ? false : true;
-		return this;
-	}
-
-	Style Blink() {
-		blink = blink ? false : true;
-		return this;
-	}
-
-	Style Reverse() {
-		reverse = reverse ? false : true;
-		return this;
-	}
-
-	Style Background(Colour b) {
-		background = b;
-		return this;
-	}
-
-	Style Foreground(Colour b) {
-		foreground = b;
-		return this;
-	}
-
-	string apply(string s = "") {
-		import std.array : appender;
-		import std.format : formattedWrite;
-		import std.conv : to;
-
-		size_t[] o;
-		if(bold)
-			o ~= 1;
-		if(underline)
-			o ~= 4;
-		if(blink)
-			o ~= 5;
-		if(reverse)
-			o ~= 7;
-
-		if(!background.empty)
-			o ~= [48, 0x05, to!size_t(background.toConsole)];
-
-		if(!foreground.empty)
-			o ~= [38, 0x05, to!size_t(foreground.toConsole)];
-
-		
-		
-		auto writer = appender!string();
-		formattedWrite(writer, "\033[%(%s;%)m%s\033[0m", o, s);
-
-		return writer.data;
-	}
+/**
+* Text colour
+* Params:
+*	s = input text
+*	R = Red
+*	G = Green
+*	B = Blue
+* Returns: Coloured text.
+*/
+T Foreground(T)(T s = "", Colour c = Colour()) {
+	return Style!T("\033[38;05;", c.toConsole(), "m", s);
+}
+/// ditto
+T Background(T)(T s = "", Colour c = Colour()) {
+	return Style!T("\033[48;05;", c.toConsole(), "m", s);
 }
