@@ -1,5 +1,4 @@
-ColourfulMoon
-=============
+# ColourfulMoon [![DUB](https://img.shields.io/dub/v/colourfulmoon.svg)](http://code.dlang.org/packages/colourfulmoon) [![DUB](https://img.shields.io/dub/l/colourfulmoon.svg)](http://code.dlang.org/packages/colourfulmoon)
 Paint your text simple!
 
 ## Windows support
