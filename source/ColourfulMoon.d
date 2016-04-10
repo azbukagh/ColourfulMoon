@@ -1,4 +1,6 @@
 module ColourfulMoon;
+import std.array : appender;
+
 /**
 * Simple text styling library
 */
@@ -9,34 +11,46 @@ module ColourfulMoon;
 *	s = input text
 * Returns: Styled text.
 */
-string Reset(string s = "") {
-	return s ~ "\033[0m";
-}
-/// ditto
-string Bold(string s = "") {
-	return "\033[1m" ~ s;
-}
-/// ditto
-string Underline(string s = "") {
-	return "\033[4m" ~ s;
-}
-/// ditto
-string Blink(string s = "") {
-	return "\033[5m" ~ s;
-}
-/// ditto
-string Reverse(string s = "") {
-	return "\033[7m" ~ s;
+
+private T Style(T, S...)(S anotherS) {
+	auto a = appender!T();
+	foreach(i; anotherS)
+		a.put(i);
+	return a.data;
 }
 
-private string Colour(ubyte R = 0, ubyte G = 0, ubyte B = 0) {
-	import std.math : floor;
-	import std.conv : to;
+T Reset(T)(T s = "") {
+	return Style!T(s, "\033[0m");
+}
+/// ditto
+T Bold(T)(T s = "") {
+	return Style!T("\033[1m", s);
+}
+/// ditto
+T Underline(T)(T s = "") {
+	return Style!T("\033[4m", s);
+}
+/// ditto
+T Blink(T)(T s = "") {
+	return Style!T("\033[5m", s);
+}
+/// ditto
+T Reverse(T)(T s = "") {
+	return Style!T("\033[7m", s);
+}
 
-	if(R == G && R == B) {
-		return to!string((R > 239) ? 15 : floor(cast(real) R / 10) + 232);
-	} else {
-		return to!string(16 + 36 * floor(cast(real) R / 51) + 6 * floor(cast(real) G / 51) + floor(cast(real) B / 51));
+struct Colour {
+	ubyte R, G, B;
+
+	string toConsole() {
+		import std.math : floor;
+		import std.conv : to;
+
+		if(R == G && R == B) {
+			return to!string((R > 239) ? 15 : floor(cast(real) R / 10) + 232);
+		} else {
+			return to!string(16 + 36 * floor(cast(real) R / 51) + 6 * floor(cast(real) G / 51) + floor(cast(real) B / 51));
+		}
 	}
 }
 
@@ -49,10 +63,10 @@ private string Colour(ubyte R = 0, ubyte G = 0, ubyte B = 0) {
 *	B = Blue
 * Returns: Coloured text.
 */
-string Foreground(string s = "", ubyte R = 0, ubyte G = 0, ubyte B = 0) {
-	return "\033[38;05;" ~ Colour(R, G, B) ~ "m" ~ s;
+T Foreground(T)(T s = "", Colour c = Colour()) {
+	return Style!T("\033[38;05;", c.toConsole(), "m", s);
 }
 /// ditto
-string Background(string s = "", ubyte R = 0, ubyte G = 0, ubyte B = 0) {
-	return "\033[48;05;" ~ Colour(R, G, B) ~ "m" ~ s;
+T Background(T)(T s = "", Colour c = Colour()) {
+	return Style!T("\033[48;05;", c.toConsole(), "m", s);
 }
