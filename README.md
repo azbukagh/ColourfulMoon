@@ -1,4 +1,4 @@
-# ColourfulMoon [![DUB](https://img.shields.io/dub/v/colourfulmoon.svg)](http://code.dlang.org/packages/colourfulmoon) [![DUB](https://img.shields.io/dub/l/colourfulmoon.svg)](http://code.dlang.org/packages/colourfulmoon)
+# ColourfulMoon [![Page on DUB](https://img.shields.io/dub/v/colourfulmoon.svg)](http://code.dlang.org/packages/colourfulmoon) [![Licence](https://img.shields.io/dub/l/colourfulmoon.svg)](https://github.com/Azbuka-slovensko/ColourfulMoon/blob/master/LICENCE.md)
 Paint your text simple!
 
 ## Windows support
@@ -54,6 +54,3 @@ To reset style of text - use *Reset*:
 
 ## Example
 Aviable in `./example`.
-
-## TODO
-- [ ] Test on BSD, OS X, etc.
