@@ -5,7 +5,7 @@ void main() {
 		.Foreground(Colour(0xA4, 0xA0, 0x9B))
 		.Underline
 		.write;
-	"olour"
+	"olourful"
 		.Background(Colour(0x0f, 0x24, 0x44))
 		.write;
 	"M"
@@ -28,5 +28,11 @@ void main() {
 		.Reset
 		.write;
 	"style."
+		.writeln;
+
+	"By writing about bug you make ColourfulMoon better. "
+		.write;
+	"Write Now!"
+		.Blink
 		.writeln;
 }
