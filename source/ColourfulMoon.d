@@ -78,9 +78,7 @@ struct Colour {
 * Text colour
 * Params:
 *	s = input text
-*	R = Red
-*	G = Green
-*	B = Blue
+*	c = colour
 * Returns: Coloured text.
 */
 T Foreground(T)(T s = "", Colour c = Colour()) {
