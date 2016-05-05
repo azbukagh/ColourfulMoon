@@ -30,7 +30,7 @@ void main() {
 	"style."
 		.writeln;
 
-	"By writing about bug you make ColourfulMoon better. "
+	"By reporting about bugs you make ColourfulMoon better. "
 		.write;
 	"Write Now!"
 		.Blink
