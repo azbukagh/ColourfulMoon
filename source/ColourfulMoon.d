@@ -1,5 +1,4 @@
 module ColourfulMoon;
-import std.array : appender;
 
 /**
 * Simple text styling library
@@ -11,14 +10,14 @@ import std.array : appender;
 *	s = input text
 * Returns: Styled text.
 */
-
 private T Style(T, S...)(S anotherS) {
+	import std.array : appender;
 	auto a = appender!T();
 	foreach(i; anotherS)
 		a.put(i);
 	return a.data;
 }
-
+/// ditto
 T Reset(T)(T s = "") {
 	version(Posix) {
 		return Style!T(s, "\033[0m");
