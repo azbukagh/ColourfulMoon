@@ -1,8 +1,8 @@
 {
 	"name": "colourfulmoon",
 	"description": "Paint you terminal!",
-	"authors": ["Azbuka-slovensko"],
-	"copyright": "2016 Azbuka-slovensko",
+	"authors": ["Azbuka"],
+	"copyright": "2016",
 	"license": "MIT",
 	"targetType": "library",
 	"subPackages": [
